@@ -5,7 +5,7 @@ import java.io.IOException;
 public class main {
 
 	public static void main(String[] args) throws IOException {
-			
+		//create the ACM object
 		accessControl acm = new accessControl();
 		acm.createUser("Jordan", "Administrator","Jordan");
 		String userInput = "";
