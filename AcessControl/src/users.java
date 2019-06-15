@@ -3,18 +3,28 @@ public class users {
 	
 	private String username;
 	private String permissions;
-	
+	private String password;
 	private String owner;
 	private String control;
 
-	public users(String username, String permissions, String owner)
+	
+	public users(String username, String permissions, String owner, String password)
 	{
 		this.setUsername(username);
 		this.setPermissions(permissions);
 		this.setOwner(owner);
 		this.setControl(username);
+		this.setPassword(password);
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getControl() {
 		return control;
 	}

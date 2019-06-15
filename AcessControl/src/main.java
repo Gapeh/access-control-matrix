@@ -1,4 +1,5 @@
 import java.io.InputStreamReader;
+import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -7,16 +8,15 @@ public class main {
 	public static void main(String[] args) throws IOException {
 		//create the ACM object
 		accessControl acm = new accessControl();
-		acm.createUser("Jordan", "Administrator","Jordan");
+		acm.createUser("Jordan", "Administrator","Jordan", "password");
 		String userInput = "";
-		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+		Scanner reader = new Scanner(System.in);
 		
 		while(userInput != "-1")
 		{
 			
-			
 			System.out.println("Please enter your command(type list for a list of commands)");						
-			userInput = reader.readLine();
+			userInput = reader.nextLine();
 			if(userInput.equals("-1"))
 			{
 				break;
@@ -24,29 +24,16 @@ public class main {
 			if(userInput.equals("list"))
 			{
 				acm.printCommands();
-			}
-			System.out.println("Creat user?");	
-			userInput = reader.readLine();
-			if(userInput.equals("-1"))
-			{
-				break;
-			}
-			
-			System.out.println("execute as who?");
-			userInput = reader.readLine();
-			if(userInput.equals("-1"))
-			{
-				break;
-			}
-			
-			String username = userInput;
-			System.out.println("Please enter your command(type list for a list of commands)");						
-			userInput = reader.readLine();
-			if(userInput.equals("-1"))
-			{
-				break;
-			}
+				continue;
+			}	
 			String command = userInput;
+			System.out.println("execute as who?");
+			userInput = reader.nextLine();
+			if(userInput.equals("-1"))
+			{
+				break;
+			}
+			String username = userInput;
 			System.out.println(acm.executeCommand(username, command));
 			
 			

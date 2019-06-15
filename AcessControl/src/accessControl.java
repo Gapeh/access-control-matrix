@@ -62,9 +62,9 @@ public class accessControl
 		
 		
 	}
-	public void createUser(String username, String permissions, String owner)
+	public void createUser(String username, String permissions, String owner, String password)
 	{
-		users user = new users(username.toUpperCase(), permissions.toUpperCase(), owner.toUpperCase());
+		users user = new users(username.toUpperCase(), permissions.toUpperCase(), owner.toUpperCase(), password);
 		activeUsers.add(user);
 		
 	}
@@ -72,8 +72,28 @@ public class accessControl
 	{
 		String permissionCategory = "";
 		command = command.toUpperCase();
+		boolean commandFound = false;
+		for(String commands : allCommands)
+		{
+			if(command.equals(commands))
+			{
+				commandFound = true;
+				break;
+			}
+		}
+		if(commandFound)
+		{			
+			System.out.println("That command was not found");
+			permissionCategory = "Not Found";
+		}
+		
+		return permissionCategory;
+	}
+		
+		/*
 		switch(command)
 		{
+		
 		case "CREATE":
 			permissionCategory = "DDL";
 			break;
@@ -101,13 +121,8 @@ public class accessControl
 		case "REVOKE":
 			permissionCategory = "DCL";		
 			break;
-		default:
-			System.out.println("That command was not found");
-			permissionCategory = "Not Found";
-			break;
-		}
-		return permissionCategory;
-	}
+		default:*/
+	
 	public boolean checkPermissions(String username, String command)
 	{
 		
