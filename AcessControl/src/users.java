@@ -16,6 +16,11 @@ public class users {
 		this.setControl(username);
 		this.setPassword(password);
 	}
+	public users(String username)
+	{
+		this.setUsername(username);
+		this.setControl(username);
+	}
 	
 	public String getPassword() {
 		return password;
@@ -37,6 +42,10 @@ public class users {
 		return username;
 	}
 
+	public void setUsername(String username) {
+		this.username = username.toUpperCase();
+	}
+	
 	public String getOwner() {
 		return owner;
 	}
@@ -45,9 +54,6 @@ public class users {
 		this.owner = owner;
 	}
 
-	public void setUsername(String username) {
-		this.username = username.toUpperCase();
-	}
 	public String getPermissions() {
 		return permissions;
 	}
