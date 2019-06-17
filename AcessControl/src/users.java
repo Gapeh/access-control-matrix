@@ -72,7 +72,9 @@ public class users {
 			}
 			else
 			{
+				this.permissions = "NULL";
 				System.out.println("Please enter a valid permission");
+				break;
 			}
 		}	
 	}

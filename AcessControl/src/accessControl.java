@@ -8,7 +8,7 @@ public class accessControl extends accessControlMatrix
 	ArrayList<objects> activeObjects = new ArrayList<objects>();
 	
 	private ArrayList<String> allCommands = new ArrayList<String>();
-	
+	private ArrayList<String> defaultCommands = new ArrayList<String>();
 	public accessControl()
 	{
 		populateCommands();
@@ -34,8 +34,22 @@ public class accessControl extends accessControlMatrix
 			allCommands.add("DELETE USER");
 			allCommands.add("LOGIN");
 			allCommands.add("CHECK PERMISSIONS");
+			
 			allCommands.add("LIST");
-		
+			allCommands.add("READ");
+			
+			allCommands.add("WHOAMI");
+			allCommands.add("QUIT");
+			
+			
+			allCommands.add("PRINTALL");
+			allCommands.add("PRINTALLOBJECTS");
+			
+			defaultCommands.add("LIST");
+			defaultCommands.add("WHOAMI");
+			defaultCommands.add("PRINTALL");
+			defaultCommands.add("PRINTALLOBJECTS");
+			defaultCommands.add("QUIT");
 	}
 	
 	public void grant()
@@ -45,6 +59,12 @@ public class accessControl extends accessControlMatrix
 	public void printCommands()
 	{
 		System.out.println(allCommands);
+	}
+	public void printCommands(users currentUser)
+	{
+		ArrayList<String> myCommands = new ArrayList<String>();
+		myCommands = convertRole(currentUser);
+		System.out.println(myCommands);
 	}
 	public void transfer(String username, String permission)
 	{
@@ -71,8 +91,9 @@ public class accessControl extends accessControlMatrix
 		objects currentObject = null;
 		for(objects object : activeObjects)
 		{
-			if(object.getName().equals(objectName.toUpperCase()))
+			if(object.getName().equals(objectName))
 			{
+				System.out.println("object found");
 				currentObject = object;
 				break;
 			}
@@ -84,14 +105,33 @@ public class accessControl extends accessControlMatrix
 		
 		
 	}
+	/*
 	@Override
 	public void createSubject(String username, String permissions, String owner, String password)
 	{
-		users user = new users(username.toUpperCase(), permissions.toUpperCase(), owner.toUpperCase(), password);
-		activeUsers.add(user);
+		users currentUser = this.returnUser(username);
+		if(currentUser == null)
+		{
+			users user = new users(username.toUpperCase(), permissions.toUpperCase(), owner.toUpperCase(), password);
+			activeUsers.add(user);
+			return;
+		}
+		System.out.println("ERROR username already exists");
+		
 	}
-	
-	
+	*/
+	@Override
+	public void createSubject(users user)
+	{
+		users currentUser = this.returnUser(user.getUsername());
+		if(currentUser == null)
+		{ 
+			activeUsers.add(user);
+			return;
+		}
+		System.out.println("ERROR username already exists");
+		
+	}
 	//username1 is destroying username2.
 	//username1 can either be admin/security or the same as username2.
 	public void destroySubject(String username1, String username2)
@@ -185,7 +225,6 @@ public class accessControl extends accessControlMatrix
 	{
 		
 		boolean grantAccess = false;
-		boolean userFound = false;		
 		if(command.equals("Not Found"))
 		{
 			return grantAccess;
@@ -208,7 +247,6 @@ public class accessControl extends accessControlMatrix
 	}
 	public boolean checkPermissions(String username, String command)
 	{
-		
 		users currentUser = null;
 		boolean grantAccess = false;
 		if(command.equals("Not Found"))
@@ -277,6 +315,14 @@ public class accessControl extends accessControlMatrix
 		}
 		return totalPermissions;
 	}
+	public ArrayList<String> addDefaults(ArrayList<String> original)
+	{
+		for(String s : defaultCommands)
+		{
+			original.add(s);
+		}
+		return original;
+	}
 	public ArrayList<String> convertRole(users user)
 	{
 		ArrayList<String> totalPermissions = new ArrayList<String>();
@@ -287,9 +333,12 @@ public class accessControl extends accessControlMatrix
 				totalPermissions.add("ROLLBACK");
 				totalPermissions.add("GRANT");
 				totalPermissions.add("DELETE USER");
+				totalPermissions = addDefaults(totalPermissions);
 				break;
 			case "REGULAR USER":
+				
 				totalPermissions = convertCategory("DML");
+				totalPermissions = addDefaults(totalPermissions);
 				break;
 			case "ADMINISTRATOR":
 				totalPermissions = convertCategory("ADMIN");
@@ -305,7 +354,6 @@ public class accessControl extends accessControlMatrix
 		command = command.toUpperCase();
 		String permissions = checkCommand(command);
 		return checkPermissions(username, command);
-		
 	}
 	public void printUsers()
 	{		
@@ -348,12 +396,12 @@ public class accessControl extends accessControlMatrix
 		objects currentObject = returnObject(object);
 		if(!permission)
 		{
-			System.out.printf("The user %s does not have access to %s object %s", user, command, object);
+			System.out.printf("The user %s does not have access to %s object %s\n", user, command, object);
 			return;
 		}		
 		else if(currentObject == null)
 		{
-			System.out.printf("The %s object was not found",object);
+			System.out.printf("The %s object was not found\n",object);
 			return;
 		}
 		else
@@ -385,6 +433,39 @@ public class accessControl extends accessControlMatrix
 	public void delete() {
 		// TODO Auto-generated method stub
 		
+	}
+	public void sqlCommand()
+	{
+		
+	}
+	@Override
+	
+	public void createObject(String objectName, String objectType, String objectContents, String username) {
+		objects currentObject = returnObject(objectName);
+		String command = "CREATE";
+		executeCommand(username, command);
+		if(currentObject != null)
+		{
+			System.out.println("An object with that name already exists please choose a different name");
+			return;
+		}
+		if(objectType.toUpperCase().equals("TABLE") || objectType.toUpperCase().equals("DATABASE"))
+		{
+			objects newObject = new objects(objectType, objectName, objectContents);
+			System.out.println("Created an object");
+			newObject.printContents();
+			activeObjects.add(newObject);
+			return;
+		}
+		System.out.println("ERROR has occured");	
+		
+	}
+	public void printAllObject()
+	{		
+		for(objects object : activeObjects)
+		{
+			System.out.println(object.getName());
+		}
 	}
 
 }

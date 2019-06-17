@@ -32,7 +32,7 @@ public class objects {
 	}
 	public void printContents()
 	{
-		System.out.printf("the contents of %s %s  are %s", type, name, contents);
+		System.out.printf("the contents of %s %s are %s\n", type, name, contents);
 	}
 	
 

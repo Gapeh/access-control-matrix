@@ -15,8 +15,8 @@ public abstract class accessControlMatrix {
 	
 	public abstract void read(String user, String object);
 	
-	
-	public abstract void createSubject(String username, String permissions, String owner, String password);
+	public abstract void createObject(String objectName, String objectType, String objectContents, String username);
+	public abstract void createSubject(users user);
 	
 	public void transfer(String userFrom, String userTo, String permission)
 	{
@@ -33,7 +33,7 @@ public abstract class accessControlMatrix {
 	
 	public void delete(String user, String permission)
 	{
-		//delete the object(must have drop permissions)
+		//delete the permission(must have drop permissions)
 		//check if user has control or owns it
 		//delete
 	}
