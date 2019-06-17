@@ -9,7 +9,6 @@ public abstract class accessControlMatrix {
 	public abstract void grant();
 	public abstract void delete();
 	public abstract void createObject();
-	public abstract void destroyObject();
 	public abstract void createSubject();
 	public abstract void destroySubject();
 	
@@ -39,11 +38,7 @@ public abstract class accessControlMatrix {
 	}
 
 	
-	public void destroyObject(String User, String objectName)
-	{
-		//check if user has ownership of the object
-		//delete the object
-	}
+	public abstract void destroyObject(users user, String object);
 	public void createSubject(String user)
 	{
 		//create user

@@ -93,7 +93,6 @@ public class accessControl extends accessControlMatrix
 		{
 			if(object.getName().equals(objectName))
 			{
-				System.out.println("object found");
 				currentObject = object;
 				break;
 			}
@@ -366,9 +365,9 @@ public class accessControl extends accessControlMatrix
 	public void transfer() {
 		// TODO Auto-generated method stub
 	}
+	
 	@Override
-	public void destroyObject(String user, String object) {			
-		users currentUser = returnUser(user);
+	public void destroyObject(users user, String object) {
 		String command = "DROP";
 		objects currentObject = returnObject(object);
 		if(currentObject == null)
@@ -376,14 +375,9 @@ public class accessControl extends accessControlMatrix
 			System.out.printf("The %s object was not found",object);
 			return;
 		}
-		boolean permission = executeCommand(user, command);
-		if(!permission)
-		{			
-			System.out.printf("The user %s does not have access to %s object %s", user, command, object);
-			return;
-		}
 		else
 		{
+			System.out.printf("The %s named %s was dropped\n", currentObject.getType(), currentObject.getName());
 			activeObjects.remove(currentObject);
 		}
 		
@@ -411,11 +405,6 @@ public class accessControl extends accessControlMatrix
 	}
 	@Override
 	public void createObject() {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void destroyObject() {
 		// TODO Auto-generated method stub
 		
 	}

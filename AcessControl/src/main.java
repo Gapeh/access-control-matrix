@@ -78,10 +78,36 @@ public class main {
 					userInput = reader.nextLine();
 					currentUser = acm.returnUser(userInput);
 				}
+				System.out.println("Please enter your password");
+				userInput = reader.nextLine();
+				
+				if(!userInput.equals(currentUser.getPassword()))
+				{
+					int counter = 3;
+					while(counter > 0)
+					{
+	
+						System.out.printf("Invalid password please enter the correct one %d attempts left\n", counter);
+						userInput = reader.nextLine();
+						if(userInput.equals(currentUser.getPassword()))
+						{
+							
+							break;
+						}						
+						counter--;						
+					}
+					if(!userInput.equals(currentUser.getPassword()))
+					{	
+						System.out.println("Too many failed attempts logging out");
+						userInput="QUIT";
+					}						
+				}
+					
 				if(userInput.equals("QUIT"))
 				{
 					break;
 				}
+				System.out.println("Login successful");
 				while(!userInput.toUpperCase().equals("QUIT")) {
 					System.out.println("Enter a command to run it, \"LIST\" to show all commands, or \"QUIT\" to logout");
 					userInput = reader.nextLine().toUpperCase();
@@ -112,6 +138,11 @@ public class main {
 						userInput = reader.nextLine();
 						acm.read(currentUser.getUsername(), userInput);
 						break;
+					case"DROP":
+						System.out.println("What would you like to drop");
+						userInput = reader.nextLine();
+						acm.destroyObject(currentUser, userInput);
+						break;
 					case "DELETE USER":
                         System.out.println("Enter username of user to be deleted");
                         String username2 = reader.nextLine();
@@ -137,7 +168,7 @@ public class main {
 							break;
 						}
 						String command = userInput;
-						System.out.printf("Command %s Successfully Executedn\n", command);
+						System.out.printf("Command %s Successfully Executed\n", command);
 						//acm.executeCommand(currentUser.getUsername(), command);
 						break;
 					}
