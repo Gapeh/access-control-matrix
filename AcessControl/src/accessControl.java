@@ -20,6 +20,8 @@ public class accessControl extends accessControlMatrix
 		populateCommands();
 	}
 	//simple function to populate the list of commands.
+	//as well as the debug commands(this will allow the user to perform debug options)
+	//debug options are useful for testing but will not be inside finished project.
 	private void populateCommands()
 
 	{
@@ -65,7 +67,7 @@ public class accessControl extends accessControlMatrix
 			}
 			
 	}
-	
+
 	@Override
 	public void delete()
 	{
@@ -75,23 +77,12 @@ public class accessControl extends accessControlMatrix
 	{
 		//empty as we are doing role based no need to grant.
 	}
-	
-		@Override
-	public void destroyObject(users user, String object) {
-		String command = "DROP";
-		objects currentObject = returnObject(object);
-		if(currentObject == null)
-		{
-			System.out.printf("The %s object was not found",object);
-			return;
-		}
-		else
-		{
-			System.out.printf("The %s named %s was dropped\n", currentObject.getType(), currentObject.getName());
-			activeObjects.remove(currentObject);
-		}
-		
+
+	@Override
+	public void transfer() {
+		// TODO Auto-generated method stub
 	}
+	
 	//read the contents of a table or database
 	@Override
 	public void read(String user, String object) 
@@ -114,6 +105,7 @@ public class accessControl extends accessControlMatrix
 			currentObject.printContents();
 		}
 	}	
+	//destroy an object(object = table or database)
 	//create an object
 	@Override
 	public void createObject(String objectName, String objectType, String objectContents, String username) {
@@ -138,6 +130,38 @@ public class accessControl extends accessControlMatrix
 	}
 	//username1 is destroying username2.
 	//username1 can either be admin/security or the same as username2.
+
+	@Override
+	public void destroyObject(users user, String object) 
+	{
+		String command = "DROP";
+		objects currentObject = returnObject(object);
+		if(currentObject == null)
+		{
+			System.out.printf("The %s object was not found",object);
+			return;
+		}
+		else
+		{
+			System.out.printf("The %s named %s was dropped\n", currentObject.getType(), currentObject.getName());
+			activeObjects.remove(currentObject);
+		}
+		
+	}
+		
+	//create a subject, make sure the username isnt already present in the list
+	@Override
+	public void createSubject(users user)
+	{
+		users currentUser = this.returnUser(user.getUsername());
+		if(currentUser == null)
+		{ 
+			activeUsers.add(user);
+			return;
+		}
+		System.out.println("ERROR username already exists");
+		
+	}
 	@Override
 	public void destroySubject(String username1, String username2)
 	{
@@ -165,10 +189,6 @@ public class accessControl extends accessControlMatrix
 			System.out.printf("You do not have permissions to delete that user");
 			return;
 		}
-	}
-	@Override
-	public void transfer() {
-		// TODO Auto-generated method stub
 	}
 	//print all the commands function
 	public void printCommands()
@@ -211,19 +231,6 @@ public class accessControl extends accessControlMatrix
 		}
 		return currentObject;
 	}
-	//create a subject, make sure the username isnt already present in the list
-	@Override
-	public void createSubject(users user)
-	{
-		users currentUser = this.returnUser(user.getUsername());
-		if(currentUser == null)
-		{ 
-			activeUsers.add(user);
-			return;
-		}
-		System.out.println("ERROR username already exists");
-		
-	}
 	//create a user function
 	public void createUser(users user)
 	{
@@ -253,39 +260,7 @@ public class accessControl extends accessControlMatrix
 		return permissionCategory;
 	}
 		
-		/*
-		switch(command)
-		{
-		
-		case "CREATE":
-			permissionCategory = "DDL";
-			break;
-		case "DROP":
-			permissionCategory = "DDL";
-			break;
-		case "SELECT":
-			permissionCategory = "DML";
-			break;
-		case "INSERT":
-			permissionCategory = "DML";
-			break;
-		case "DELETE":
-			permissionCategory = "DML";
-			break;
-		case "COMMIT":
-			permissionCategory = "TCL";
-			break;
-		case "ROLLBACK":
-			permissionCategory = "TCL";
-			break;
-		case "GRANT":
-			permissionCategory = "DCL";					
-			break;
-		case "REVOKE":
-			permissionCategory = "DCL";		
-			break;
-		default:*/
-	//check permissions has the option to ahve the user be passed to it or the username and perform a user lookup
+	//check permissions has the option to have the user be passed to it or the username and perform a user lookup
 	public boolean checkPermissions(users currentUser, String command)
 	{
 		
@@ -435,7 +410,6 @@ public class accessControl extends accessControlMatrix
 		}
 	}
 	
-	//destroy an object(object = table or database)
 
 	//debug function to print all of the objects.
 	public void printAllObject()
