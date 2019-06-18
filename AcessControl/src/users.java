@@ -4,15 +4,13 @@ public class users {
 	private String username;
 	private String permissions;
 	private String password;
-	private String owner;
 	private String control;
 
 	
-	public users(String username, String permissions, String owner, String password)
+	public users(String username, String permissions,  String password)
 	{
 		this.setUsername(username);
 		this.setPermissions(permissions);
-		this.setOwner(owner);
 		this.setControl(username);
 		this.setPassword(password);
 	}
@@ -46,14 +44,6 @@ public class users {
 		this.username = username.toUpperCase();
 	}
 	
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
-
 	public String getPermissions() {
 		return permissions;
 	}

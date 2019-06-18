@@ -8,7 +8,7 @@ public class main {
 	public static void main(String[] args) throws IOException {
 		//create the ACM object
 		accessControl acm = new accessControl();
-		users user1 = new users("Jordan", "ADMINISTRATOR","Jordan", "password");
+		users user1 = new users("Jordan", "ADMINISTRATOR", "password");
 
 		acm.createSubject(user1);
 		String userInput = "";
@@ -24,12 +24,8 @@ public class main {
 			case "NEW":
 				System.out.println("Please enter username");
 				userInput = reader.nextLine();
-				users user = new users(userInput);
-				
-				System.out.println("Please enter name");
-				userInput = reader.nextLine();
-				user.setOwner(userInput);
-				
+				users user = new users(userInput);	
+
 				System.out.println("Please enter password(Case Sensitive)");
 				userInput = reader.nextLine();
 				user.setPassword(userInput);
@@ -67,7 +63,7 @@ public class main {
 					{
 						break;
 					}
-					if(userInput.equals("QUIT"))
+					if(userInput.toUpperCase().equals("QUIT"))
 					{
 						System.out.println("quitting");
 						acm.printUsers();
@@ -91,7 +87,6 @@ public class main {
 						userInput = reader.nextLine();
 						if(userInput.equals(currentUser.getPassword()))
 						{
-							
 							break;
 						}						
 						counter--;						
@@ -124,10 +119,21 @@ public class main {
 					case "CREATE":
 						System.out.println("Would you like to create a TABLE or a DATABASE");
 						userInput = reader.nextLine();
+					
 						String objectType = userInput.toUpperCase();
+						if(!objectType.equals("TABLE") && !objectType.equals("DATABASE"))
+						{
+							System.out.println("Must create either a table or a database");
+							break;
+						}
 						System.out.printf("What is the name of the %s\n", objectType);
 						userInput = reader.nextLine();
 						String objectName = userInput;
+						if(acm.returnObject(objectName)!=null)
+						{
+							System.out.println("An object with that name already exists");
+							break;
+						}
 						System.out.printf("What is the contents of the %s\n", objectType);
 						userInput = reader.nextLine();			
 						String objectContents = userInput;
