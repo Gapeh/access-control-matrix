@@ -1,34 +1,74 @@
-# access-control-matrix
-A software development firm had been asked to develop access control mechanism for a Database Management System (DBMS). 
+Created by: Jordan Jones & Anthony Pacini
+Date: 6/18/2019
+Assignment 3: Access Control Matrix for DBMS
+Class: Computer Security
 
 
+How to run(on eclipse):
+	Unzip the file	
+	Import project
+		general->file system.
+		select the ACM file
+		select all.
+	Select all the contents of the unzipped file
+	run
 
-A software development firm had been asked to develop access control mechanism for a Database Management System (DBMS). In this assignment you are asked to perform the task of the security designer for that firm, i.e., designing and implementing the access control mechanism for the DBMS. 
- 
-The DBMS Access Control Mechanism (DACM) will receive SQL commands and either accept and perform the command or deny the command. 
-SQL commands can be divided into four categories. The following are the four categories and the minimal commands that you need for each category: 
- 
-• DDL (Data Definition Language): 1) Create; and 2) Drop. 
-• DML (Data Manipulation Language): 1) Select; 2) Insert; and 3) Delete.
- • TCL (Transaction Control Language): 1) Commit; and 2) Rollback. 
- • DCL (Data Control Language): 1) Grant; and 2) Revoke. 
- 
-The database system has three types of users: 
-1. Security Officers: Manges users and passwords. In addition, they perform backup and recovery operations. 
-2. Regular Users: Users who are allowed to perform only DML operations. 
-3. Administrators: Perform the tasks of all the above. 
- 
-Requirements 
-1. Implement a generic Access Control Matrix class that implements all the Access Control System Commands in Table 4.3 of the book (slides). 
-2. Create the required objects and/or structures to implement the system described above.  
-3. Show the required initialization for the object of the Access Control Matric class. 
- 4. Determine the type of this access control mechanism (DAC, MAC, RBAC, etc). 
- 5. Demonstrate the abilities of the system to: a. Add/remove users. b. Authenticate users. c. Create and drop databases and tables (Table structures and contents are not important). d. Accept/Deny the SQL command received by the users. 
- 6. It is essential to utilize the class implemented in requirement #1.  
- 
-Note 1: You are not required to implement the whole DBMS system, only the sufficient part to perform the demonstration. 
- 
-Note 2: This is a design assignment, so different correct implementations are possible. 
- 
-Note 3: You can use any language that supports OOP. 
- 
+How to run the program
+	The program starts with a default user with the credentials
+		username = jordan
+		password = password
+		permissions = Administratos(this means he can run all of the commands)
+	The ACM will prompt the user to either enter new or return
+		New: will run the user through the user creation
+			will prompt the user for a username
+				NOTE: there cannot be 2 users with the same username
+			will prompt the user for a password
+				NOTE: passwords are case sensative(stored in plain text)
+			will prompt the user to enter a role
+				NOTE:1 2 and 3 are the only valid inputs and they correspond to the roles
+				if the user does not enter a valid role the user will be prompted to enter it again until 1 2 or 3 is entered. 
+			if the user picks a username that is already taken the account creation will not be successfull
+		return: will run the user through the login 
+			will prompt the user for a username
+				NOTE: if invalid username the user will be prompted again(QUIT to exit)
+			will prompt the user for a password
+				NOTE: 3 attempts for the password if wrong the user will be kicked out
+			login unsuccessfull
+				user is taken back to the new/return screen.
+			login successfull: the user is now logged in
+				The user can now type in the commands to run
+					NOTE: if the user types in an invalid command(IE no permission to run it or its an invalid command the command will not run and the user will be notified they dont have access to that command)
+				The ACM will check the users permission for every command:
+				List - will list all of the available commands the user can run
+				Create: 
+    					ask you if you want to create a table or database
+    					ask for the name of your object
+   					ask for the contents of your object
+				Read:
+    					will let you see the contents of an object if you have access to view it and
+    					it exists
+				Drop:
+    					will allow you to destroy an object if you have access to it and it exists
+				Delete User:
+   					ask to enter the username of the user that you want to delete
+    					It will delete that user if you have permissions to delete users or you
+    					are trying to delete yourself
+				Quit:
+    					logs you out
+				Any other SQL commands:
+					Will say permission granted/denied if the user has permission to run.
+				DEBUG COMMANDS:
+					Whoami:
+    						will tell you the user you are logged in ask currently
+					printall:
+    						prints all users
+					printallobjects:
+    						prints all objects that have been created	
+Computer information:
+	OS = 	Windows 10 - version 1809(OS Build 17763.503)
+	Compiler = ECJ
+	JRE = "JDK-12.0.1")
+	IDE = ECLIPSE Version: 2019-03 (4.11.0) Build id: 20190314-1200
+	
+
+	
